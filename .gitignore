@@ -1,0 +1,4 @@
+bin/
+.DS_Store
+assets/font/*.hash
+/project.xml.hxml
