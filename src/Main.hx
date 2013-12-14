@@ -12,7 +12,7 @@ class Main extends Engine
 		Input.define("move_down", [ Key.S, Key.DOWN ]);
 		Input.define("move_left", [ Key.A, Key.LEFT ]);
 		Input.define("move_right", [ Key.D, Key.RIGHT ]);
-		Input.define("swing", [ Key.SPACE, Key.CONTROL, Key.X ]);
+		Input.define("throw", [ Key.SPACE, Key.CONTROL, Key.X ]);
 		
 #if debug
 		HXP.console.enable();

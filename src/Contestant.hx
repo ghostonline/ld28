@@ -20,9 +20,10 @@ class Contestant extends Entity
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = 10;
+        throwSpeed = this.speed * 2;
         height = width;
         var halfWidth = Math.floor(halfWidth);
-        var sprite = Image.createCircle(halfWidth, 0xFF0000);
+        sprite = Image.createCircle(halfWidth, 0xFF0000);
         addGraphic(sprite);
         weapon = Image.createRect(weaponWidth, weaponHeight, 0x00FF00);
         weapon.centerOrigin();
@@ -38,6 +39,11 @@ class Contestant extends Entity
         type = "contestant";
     }
 
+    function weaponIdle()
+    {
+        return !(weapon == null || weapon.visible || stunnedCooldown > 0);
+    }
+
     public function setMoveDirection(dX:Int, dY:Int)
     {
         if (stunnedCooldown > 0)
@@ -50,7 +56,7 @@ class Contestant extends Entity
 
     public function setAimDirection(dX:Int, dY:Int)
     {
-        if (!weapon.visible && (dX != 0 || dY != 0))
+        if ((weapon == null || !weapon.visible) && (dX != 0 || dY != 0))
         {
             dir.x = dX;
             dir.y = dY;
@@ -60,7 +66,7 @@ class Contestant extends Entity
 
     public function swing()
     {
-        if (weapon.visible || stunnedCooldown > 0)
+        if (!weaponIdle())
         {
             return;
         }
@@ -68,6 +74,17 @@ class Contestant extends Entity
     	swingCooldown = swingDuration;
     	weapon.visible = true;
         updateWeaponAngle();
+    }
+
+    public function throw_()
+    {
+        if (!weaponIdle())
+            return;
+
+        graphic = sprite;
+        var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, this);
+        scene.add(weapon);
+        this.weapon = null;
     }
 
     public function receiveSwing(angle:Float, strength:Float)
@@ -104,7 +121,7 @@ class Contestant extends Entity
     {
     	super.update();
     	moveBy(moveDir.x, moveDir.y, type);
-    	if (weapon.visible)
+    	if (weapon != null && weapon.visible)
     	{
     		swingCooldown -= HXP.elapsed;
             updateWeaponAngle();
@@ -120,12 +137,14 @@ class Contestant extends Entity
         }
     }
 
+    var sprite:Image;
     var moveDir:Point;
     var dir:Point;
     var speed:Float;
-    var weapon:Image;
+    var throwSpeed:Float;
     var swingDuration:Float;
     var swingCooldown:Float;
+    var weapon:Image;
     var weaponRange:Float;
     var weaponStrength:Float;
     

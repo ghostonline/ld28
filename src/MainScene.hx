@@ -41,7 +41,7 @@ class MainScene extends Scene
 		}
 		player.setMoveDirection(moveX, moveY);
 
-		if (Input.mousePressed || Input.check("swing"))
+		if (Input.mousePressed)
 		{
 			if (!swingDown)
 			{
@@ -52,6 +52,11 @@ class MainScene extends Scene
 		else
 		{
 			swingDown = false;
+		}
+
+		if (Input.check("throw"))
+		{
+			player.throw_();
 		}
 
 		ai.updateAI();
