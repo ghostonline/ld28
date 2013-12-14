@@ -8,10 +8,6 @@ class Main extends Engine
 
 	override public function init()
 	{
-		Input.define("abort_aim", [ Key.ESCAPE ]);
-		Input.define("fire", [ Key.SPACE ]);
-		Input.define("reset", [ Key.R ]);
-
 #if debug
 		HXP.console.enable();
 #end

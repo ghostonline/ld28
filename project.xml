@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Trickshot" package="nl.ghostweb.trickshot" version="1.0.0" company="" />
+	<meta title="King of the hill" package="nl.ghostweb.koth" version="1.0.0" company="" />
 
- 	<app file="Trickshot" main="Main" path="bin" />
+ 	<app file="Koth" main="Main" path="bin" />
 
-	<window fps="60" background="0x333333" />
+	<window fps="30" background="0x333333" />
 	<window width="640" height="480" resizable="false" unless="mobile" />
 	<window fullscreen="true" if="mobile" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
@@ -14,7 +14,6 @@
 	<haxelib name="openfl" />
 	<haxelib name="HaxePunk" />
 
-	<assets path="assets/levels" rename="levels" include="*.lvl" />
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
 	<assets path="assets/audio" rename="audio" include="*.mp3|*.wav" if="flash" />
 	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
