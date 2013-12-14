@@ -9,17 +9,17 @@ class Contestant extends Entity
 	static var weaponWidth = 24;
 	static var weaponHeight = 6;
 	static var swingArc = 130;
-    static var stunnedDuration = 0.3;
+    static var stunnedDuration = 0.2;
     static var hitAngleIncrement = 45;
 
-    public function new(x:Float, y:Float)
+    public function new(x:Float, y:Float, speed:Float)
     {
         super(x, y);
-        speed = 5;
+        this.speed = speed;
         width = 32;
         swingDuration = 0.2;
         weaponRange = 16 + weaponWidth;
-        weaponStrength = 5;
+        weaponStrength = 10;
         height = width;
         var halfWidth = Math.floor(halfWidth);
         var sprite = Image.createCircle(halfWidth, 0xFF0000);

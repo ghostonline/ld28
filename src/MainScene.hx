@@ -8,10 +8,11 @@ class MainScene extends Scene
 	{
 		super.begin();
 
-		player = new Contestant(100, 200);
+		player = new Contestant(100, 200, 5);
 		add(player);
-		opponent = new Contestant(320, 240);
+		opponent = new Contestant(320, 240, 3);
 		add(opponent);
+		ai = new AgressiveAI(opponent, player);
 	}
 
 	public override function update()
@@ -53,9 +54,12 @@ class MainScene extends Scene
 			swingDown = false;
 		}
 
+		ai.updateAI();
+
 	}
 
 	var player:Contestant;
 	var opponent:Contestant;
 	var swingDown:Bool;
+	var ai:AgressiveAI;
 }
