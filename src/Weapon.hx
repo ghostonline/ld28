@@ -18,13 +18,36 @@ class Weapon extends Entity
         graphic = image;
         image.centerOrigin();
         image.visible = true;
+        var halfWidth = Math.floor(image.width / 2);
+        mask = new com.haxepunk.masks.Circle(halfWidth, -halfWidth, -halfWidth);
     }
 
     public override function update()
     {
         super.update();
-        moveBy(moveX, moveY);
+        moveBy(moveX, moveY, "contestant");
         image.angle += dAngle;
+    }
+
+    public override function moveCollideX(e:Entity)
+    {
+    	if (e == owner)
+    	{
+    		return false;
+    	}
+
+    	var contestant = cast(e, Contestant);
+    	var angle = com.haxepunk.HXP.angle(x, y, e.x, e.y);
+    	contestant.receiveSwing( angle , strength );
+    	moveX = 0;
+    	moveY = 0;
+    	dAngle = 0;
+    	return true;
+    }
+
+    public override function moveCollideY(e:Entity)
+    {
+    	return moveCollideX(e);
     }
 
     var dAngle:Float;

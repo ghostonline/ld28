@@ -95,7 +95,10 @@ class Contestant extends Entity
         hitDir = new Point();
         HXP.angleXY(hitDir, angle, strength);
         stunnedCooldown = stunnedDuration;
-        weapon.visible = false;
+        if (weapon != null)
+        {
+            weapon.visible = false;
+        }
         moveDir = new Point();
     }
 
