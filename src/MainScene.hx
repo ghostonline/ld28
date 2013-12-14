@@ -8,9 +8,9 @@ class MainScene extends Scene
 	{
 		super.begin();
 
-		player = new Contestant(100, 200, 5);
+		player = new Contestant(100, 200, 5, 0.2);
 		add(player);
-		opponent = new Contestant(320, 240, 3);
+		opponent = new Contestant(320, 240, 3, 0.3);
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
 	}

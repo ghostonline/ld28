@@ -3,7 +3,7 @@ import com.haxepunk.HXP;
 
 class AgressiveAI
 {
-	static var swingRangeThreshold = 48;
+	static var swingRangeThreshold = 32;
 
 	public function new(contestant:Contestant, target:Contestant)
 	{

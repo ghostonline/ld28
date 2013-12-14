@@ -6,19 +6,19 @@ import flash.geom.Point;
  
 class Contestant extends Entity
 {
-	static var weaponWidth = 24;
+	static var weaponWidth = 20;
 	static var weaponHeight = 6;
 	static var swingArc = 130;
     static var stunnedDuration = 0.2;
     static var hitAngleIncrement = 45;
 
-    public function new(x:Float, y:Float, speed:Float)
+    public function new(x:Float, y:Float, speed:Float, swingDuration:Float)
     {
         super(x, y);
         this.speed = speed;
-        width = 32;
-        swingDuration = 0.2;
-        weaponRange = 16 + weaponWidth;
+        width = 24;
+        this.swingDuration = swingDuration;
+        weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = 10;
         height = width;
         var halfWidth = Math.floor(halfWidth);
