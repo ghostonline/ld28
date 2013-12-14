@@ -9,7 +9,7 @@ class Contestant extends Entity
 	static var weaponWidth = 20;
 	static var weaponHeight = 6;
 	static var swingArc = 130;
-    static var stunnedDuration = 0.2;
+    static var stunnedDuration = 0.1;
     static var hitAngleIncrement = 45;
 
     public function new(x:Float, y:Float, speed:Float, swingDuration:Float)

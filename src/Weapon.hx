@@ -16,6 +16,8 @@ class Weapon extends Entity
         moveY = dY * throwSpeed;
         dAngle = turnAroundFactor * throwSpeed;
         graphic = image;
+        image.x = 0;
+        image.y = 0;
         image.centerOrigin();
         image.visible = true;
         var halfWidth = Math.floor(image.width / 2);
