@@ -18,6 +18,8 @@ class MainScene extends Scene
 	{
 		super.update();
 
+		player.setAimDirection(Math.floor(Input.mouseX - player.x), Math.floor(Input.mouseY - player.y));
+
 		var moveX = 0;
 		var moveY = 0;
 		if (Input.check("move_up"))
@@ -38,7 +40,7 @@ class MainScene extends Scene
 		}
 		player.setMoveDirection(moveX, moveY);
 
-		if (Input.check("swing"))
+		if (Input.mousePressed || Input.check("swing"))
 		{
 			if (!swingDown)
 			{
@@ -50,6 +52,7 @@ class MainScene extends Scene
 		{
 			swingDown = false;
 		}
+
 	}
 
 	var player:Contestant;

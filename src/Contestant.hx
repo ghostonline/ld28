@@ -46,11 +46,16 @@ class Contestant extends Entity
     	moveDir.x = dX;
     	moveDir.y = dY;
     	moveDir.normalize(speed);
+    }
+
+    public function setAimDirection(dX:Int, dY:Int)
+    {
         if (!weapon.visible && (dX != 0 || dY != 0))
         {
-            dir = moveDir.clone();
+            dir.x = dX;
+            dir.y = dY;
             dir.normalize(1);
-        }
+        }        
     }
 
     public function swing()
