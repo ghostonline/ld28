@@ -35,7 +35,6 @@ class Contestant extends Entity
         weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = strength;
         var weaponImage = new Image("graphics/paddle.png");
-        installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
 
@@ -63,8 +62,7 @@ class Contestant extends Entity
         shadow.originX = 8;
         shadow.originY = 19;
         shadow.alpha = 0.5;
-        addGraphic(shadow);
-        addGraphic(sprite);
+        installWeapon(weaponImage, weaponRange, weaponStrength);
 
         moveDir = new Point();
         dir = new Point(1, 0);
@@ -92,8 +90,13 @@ class Contestant extends Entity
 
         weapon.centerOrigin();
         weapon.originX = weaponWidth;
-        addGraphic(weapon);
+
         weapon.visible = false;
+        
+        graphic = new Graphiclist();
+        addGraphic(weapon);
+        addGraphic(shadow);
+        addGraphic(sprite);
     }
 
     function weaponIdle()
