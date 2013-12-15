@@ -11,14 +11,9 @@ class MainScene extends Scene
 
 		arena = new Arena(16, 64, 288, 144);
 		add(arena);
-		player = new Contestant(50, 120, 3, 0.15, arena);
-		player.defeated = contestantDefeated;
-		add(player);
-		opponent = new Contestant(160, 120, 1, 0.3, arena);
-		opponent.defeated = contestantDefeated;
-		add(opponent);
-		ai = new AgressiveAI(opponent, player);
 		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
+		spawnPlayer();
+		spawnOpponent();
 	}
 
 	function shrinkArena(Void):Void
@@ -26,9 +21,18 @@ class MainScene extends Scene
 		arena.dropSides();
 	}
 
-	function contestantDefeated()
+	function spawnPlayer()
 	{
-		trace("Dead");
+		player = new Contestant(50, 120, 3, 0.15, arena);
+		add(player);
+	}
+
+	function spawnOpponent()
+	{
+		opponent = new Contestant(160, 120, 1, 0.3, arena);
+		opponent.defeated = spawnOpponent;
+		add(opponent);
+		ai = new AgressiveAI(opponent, player);
 	}
 
 	public override function update()
@@ -75,7 +79,7 @@ class MainScene extends Scene
 			player.throw_();
 		}
 
-		//ai.updateAI();
+		ai.updateAI();
 
 	}
 
