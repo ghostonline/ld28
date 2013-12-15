@@ -8,7 +8,7 @@ import flash.geom.Rectangle;
  
 class Contestant extends Entity
 {
-	static var weaponWidth = 12;
+	static var weaponWidth = 24;
 	static var weaponHeight = 3;
 	static var swingArc = 130;
     static var stunnedDuration = 0.1;

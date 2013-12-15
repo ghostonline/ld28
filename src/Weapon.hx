@@ -66,6 +66,7 @@ class Weapon extends Entity
         scene.remove(this);
     }
 
+
     public var dangerous:Bool;
     var dAngle:Float;
     var moveX:Float;
