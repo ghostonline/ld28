@@ -4,6 +4,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Tilemap;
 import com.haxepunk.tweens.motion.LinearMotion;
 import com.haxepunk.utils.Ease;
+import flash.geom.Rectangle;
  
 private class FloorDrop
 {
@@ -33,7 +34,7 @@ class Arena extends Entity
         rows = Math.floor(height / tileHeight);
         for (row in 0...rows) {
         	for (col in 0...columns) {
-        		var tile = Image.createRect(tileWidth, tileHeight, 0x0000FF);
+        		var tile = new Image("graphics/tiles.png", new Rectangle(tileWidth * HXP.rand(4), 0, tileWidth, 24));
         		tile.x = col * tileWidth;
         		tile.y = row * tileHeight;
         		ground.push(tile);
