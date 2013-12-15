@@ -4,7 +4,7 @@
 
  	<app file="Koth" main="Main" path="bin" />
 
-	<window fps="30" background="0x333333" />
+	<window fps="30" background="0x99CCCC" />
 	<window width="640" height="480" resizable="false" unless="mobile" />
 	<window fullscreen="true" if="mobile" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
