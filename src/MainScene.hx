@@ -42,6 +42,8 @@ class MainScene extends Scene
 		counter.setCount(0);
 		spawnPlayer();
 		spawnStartGamePawn();
+		title = new Title();
+		add(title);
 	}
 
 	function loadLevels()
@@ -80,6 +82,7 @@ class MainScene extends Scene
 		startPawn.defeated = function() { 
 			spawnOpponent();
 			HXP.alarm(shrinkInterval, shrinkArena, Looping);
+			title.hide();
 		}
 		add(startPawn);
 	}
@@ -179,4 +182,5 @@ class MainScene extends Scene
 	var defeatCount:Int;
 	var playerDead:Bool;
 	var resetPrimed:Bool;
+	var title:Title;
 }
