@@ -80,7 +80,7 @@ class MainScene extends Scene
 		var levelNum = Math.floor(defeatCount / opponentsPerLevel);
 		levelNum = Math.floor(com.haxepunk.HXP.clamp(levelNum, 0, levels.length - 1));
 		var levelData = levels[levelNum];
-		opponent = new Contestant(160, 120, levelData.speed, levelData.swingDuration, arena, levelData.color, levelData.strength);
+		opponent = new Contestant(160, 168, levelData.speed, levelData.swingDuration, arena, levelData.color, levelData.strength);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
