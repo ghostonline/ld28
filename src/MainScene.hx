@@ -52,7 +52,7 @@ class MainScene extends Scene
 		levels.push(new LevelOpponent(1, 0.3, 6, 0x808000)); // Olive	
 		levels.push(new LevelOpponent(1, 0.3, 8, 0x008000)); // Green	
 		levels.push(new LevelOpponent(2, 0.3, 3, 0x008080)); // Teal	
-		levels.push(new LevelOpponent(2, 0.3, 6, 0xFF0000)); // Red	
+		levels.push(new LevelOpponent(2, 0.3, 6, 0x0000FF)); // Blue	
 		levels.push(new LevelOpponent(3, 0.3, 6, 0x800080)); // Purple	
 		levels.push(new LevelOpponent(3, 0.3, 6, 0x800000)); // Maroon	
 		levels.push(new LevelOpponent(3, 0.3, 8, 0x00FF00)); // Lime	
