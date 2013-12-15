@@ -1,13 +1,35 @@
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
 
+private class LevelOpponent
+{
+	public var speed:Float;
+	public var swingDuration:Float;
+	public var strength:Float;
+	public var color:Int;
+
+	public function new(speed:Float, swingDuration:Float, strength:Float, color:Int)
+	{
+		this.speed = speed;
+		this.swingDuration = swingDuration;
+		this.strength = strength;
+		this.color = color;
+	}
+}
+
 class MainScene extends Scene
 {
 	static var shrinkInterval = 10;
+	static var levels:Array<LevelOpponent> = null;
+	static var opponentsPerLevel = 3;
 
 	public override function begin()
 	{
 		super.begin();
+		if (levels == null)
+		{
+			loadLevels();
+		}
 
 		arena = new Arena(16, 112, 288, 112);
 		add(arena);
@@ -21,6 +43,21 @@ class MainScene extends Scene
 		spawnOpponent();
 	}
 
+	function loadLevels()
+	{
+		levels = new Array<LevelOpponent>();
+		levels.push(new LevelOpponent(1, 0.3, 3, 0xFFFF00)); // Yellow	
+		levels.push(new LevelOpponent(1, 0.3, 6, 0x808000)); // Olive	
+		levels.push(new LevelOpponent(1, 0.3, 8, 0x008000)); // Green	
+		levels.push(new LevelOpponent(2, 0.3, 3, 0x008080)); // Teal	
+		levels.push(new LevelOpponent(2, 0.3, 6, 0xFF0000)); // Red	
+		levels.push(new LevelOpponent(3, 0.3, 6, 0x800080)); // Purple	
+		levels.push(new LevelOpponent(3, 0.3, 6, 0x800000)); // Maroon	
+		levels.push(new LevelOpponent(3, 0.3, 8, 0x00FF00)); // Lime	
+		levels.push(new LevelOpponent(3, 0.3, 10, 0x00FFFF)); // Aqua	
+		levels.push(new LevelOpponent(3, 0.3, 12, 0xFF00FF)); // Fuchsia	
+	}
+
 	function shrinkArena(Void):Void
 	{
 		arena.dropSides();
@@ -28,7 +65,7 @@ class MainScene extends Scene
 
 	function spawnPlayer()
 	{
-		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF0000);
+		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF0000, 6);
 		player.defeated = function() { playerDead = true; }
 		add(player);
 	}
@@ -40,7 +77,10 @@ class MainScene extends Scene
 
 		defeatCount += 1;
 		counter.setCount(defeatCount);
-		opponent = new Contestant(160, 120, 1, 0.3, arena, 0x0000FF);
+		var levelNum = Math.floor(defeatCount / opponentsPerLevel);
+		levelNum = Math.floor(com.haxepunk.HXP.clamp(levelNum, 0, levels.length - 1));
+		var levelData = levels[levelNum];
+		opponent = new Contestant(160, 120, levelData.speed, levelData.swingDuration, arena, levelData.color, levelData.strength);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
