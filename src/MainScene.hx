@@ -13,7 +13,7 @@ class MainScene extends Scene
 		opponent = new Contestant(160, 120, 1, 0.3);
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
-		arena = new Arena(16, 64, 304, 144 );
+		arena = new Arena(16, 64, 288, 144);
 		add(arena);
 		com.haxepunk.HXP.alarm(2.5, shrinkArena, Looping);
 	}

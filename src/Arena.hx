@@ -23,6 +23,7 @@ class Arena extends Entity
 	static var tileHeight = 16;
 	static var fallSpeed = 128;
 	static var fallSpeedFalloff = 4;
+	static var hitboxShrinkSpeed = 1;
 
     public function new(x:Float, y:Float, width:Int, height:Int)
     {
@@ -69,8 +70,11 @@ class Arena extends Entity
     public override function update()
     {
         super.update();
-        for (d in drop)
+        var removables = 0;
+        for (i in 0...drop.length)
         {
+        	var idx = drop.length - i - 1;
+        	var d = drop[idx];
         	if (d.tween.active)
         	{
         		for (tile in d.images)
@@ -78,6 +82,29 @@ class Arena extends Entity
         			tile.y = d.tween.y;
         		}
         	}
+        	else
+        	{
+        		var lastIdx = drop.length - 1;
+    			drop[idx] = drop[lastIdx];
+    			removables += 1;
+        		for (tile in d.images)
+        		{
+        			tile.visible = false;
+        		}
+        	}
+        }
+
+        for (i in 0...removables)
+        {
+        	drop.pop();
+        }
+
+        var hitBoxWidth = (columns - reduced * 2) * tileWidth;
+        if (width > hitBoxWidth)
+        {
+        	var offsetX = Math.floor(reduced * tileWidth - (width - hitBoxWidth) * 0.5);
+        	width -= hitboxShrinkSpeed;
+        	setHitbox(width, height, -offsetX);
         }
     }
 
