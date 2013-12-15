@@ -3,7 +3,7 @@ import com.haxepunk.utils.Input;
 
 class MainScene extends Scene
 {
-	static var shrinkInterval = 5;
+	static var shrinkInterval = 10;
 
 	public override function begin()
 	{
@@ -12,9 +12,13 @@ class MainScene extends Scene
 		arena = new Arena(16, 112, 288, 112);
 		add(arena);
 		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
+		add(new Background());
+		counter = new Counter(295, 84);
+		add(counter);
+		defeatCount = -1;
+		counter.setCount(0);
 		spawnPlayer();
 		spawnOpponent();
-		add(new Background());
 	}
 
 	function shrinkArena(Void):Void
@@ -25,11 +29,17 @@ class MainScene extends Scene
 	function spawnPlayer()
 	{
 		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF9999);
+		player.defeated = function() { playerDead = true; }
 		add(player);
 	}
 
 	function spawnOpponent()
 	{
+		if (playerDead)
+			return;
+
+		defeatCount += 1;
+		counter.setCount(defeatCount);
 		opponent = new Contestant(160, 120, 1, 0.3, arena, 0x3333FF);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
@@ -88,4 +98,7 @@ class MainScene extends Scene
 	var swingDown:Bool;
 	var ai:AgressiveAI;
 	var arena:Arena;
+	var counter:Counter;
+	var defeatCount:Int;
+	var playerDead:Bool;
 }
