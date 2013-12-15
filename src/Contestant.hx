@@ -219,6 +219,7 @@ class Contestant extends Entity
     	super.update();
         if (dropTween != null)
         {
+            layer = 50 - Math.floor(y / 240 * 30);
             sprite.y = -dropTween.value;
             shadow.scale = 1 - dropTween.value / 240;
             if (!dropTween.active)
@@ -263,7 +264,7 @@ class Contestant extends Entity
 
         if (!falling)
         {
-            layer = 50 - Math.floor(y / 240 * 12);
+            layer = 50 - Math.floor(y / 240 * 30);
             if (bounceProgress < 1 && !(stunnedCooldown > 0))
             {
                 bounceProgress += bounceSpeed;

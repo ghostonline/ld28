@@ -35,14 +35,13 @@ class MainScene extends Scene
 
 		arena = new Arena(16, 112, 288, 112);
 		add(arena);
-		HXP.alarm(shrinkInterval, shrinkArena, Looping);
 		add(new Background());
 		counter = new Counter(295, 84);
 		add(counter);
 		defeatCount = -1;
 		counter.setCount(0);
 		spawnPlayer();
-		spawnOpponent();
+		spawnStartGamePawn();
 	}
 
 	function loadLevels()
@@ -73,6 +72,16 @@ class MainScene extends Scene
 			playerDead = true; 
 		}
 		add(player);
+	}
+
+	function spawnStartGamePawn()
+	{
+		var startPawn = new Contestant(160, 168, 3, 0.15, arena, 0xFFFFFF, 6);
+		startPawn.defeated = function() { 
+			spawnOpponent();
+			HXP.alarm(shrinkInterval, shrinkArena, Looping);
+		}
+		add(startPawn);
 	}
 
 	function spawnOpponent()
@@ -155,7 +164,10 @@ class MainScene extends Scene
 			resetPrimed = false;
 		}
 
-		ai.updateAI();
+		if (ai != null)
+		{
+			ai.updateAI();
+		}
 	}
 
 	var player:Contestant;
