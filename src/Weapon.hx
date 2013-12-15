@@ -5,12 +5,13 @@ class Weapon extends Entity
 {
 	static var turnAroundFactor = 2;
 
-    public function new(x:Float, y:Float, dX:Float, dY:Float, throwSpeed:Float, image:Image, range:Float, strength:Float, owner:Contestant)
+    public function new(x:Float, y:Float, dX:Float, dY:Float, throwSpeed:Float, image:Image, range:Float, strength:Float, throwStrength:Float, owner:Contestant)
     {
         super(x, y);
         this.image = image;
         this.range = range;
         this.strength = strength;
+        this.throwStrength = throwStrength;
         this.owner = owner;
         moveX = dX * throwSpeed;
         moveY = dY * throwSpeed;
@@ -40,7 +41,7 @@ class Weapon extends Entity
 
     	var contestant = cast(e, Contestant);
     	var angle = com.haxepunk.HXP.angle(x, y, e.x, e.y);
-    	contestant.receiveSwing( angle , strength );
+    	contestant.receiveSwing( angle , throwStrength );
     	moveX = 0;
     	moveY = 0;
     	dAngle = 0;
@@ -58,5 +59,6 @@ class Weapon extends Entity
     var image:Image;
     var range:Float;
     var strength:Float;
+    var throwStrength:Float;
     var owner:Contestant;
 }

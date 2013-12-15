@@ -82,7 +82,7 @@ class Contestant extends Entity
             return;
 
         graphic = sprite;
-        var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, this);
+        var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * 1.5, this);
         scene.add(weapon);
         this.weapon = null;
     }
