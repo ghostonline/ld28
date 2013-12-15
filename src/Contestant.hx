@@ -23,17 +23,21 @@ class Contestant extends Entity
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = 6;
-        var weaponImage = Image.createRect(weaponWidth, weaponHeight, 0x00FF00);
+        var weaponImage = new Image("graphics/paddle.png");
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
-        sprite = new Image("graphics/player.png", new Rectangle(0,24,16,24));
+        sprite = new Image("graphics/player.png", new Rectangle(0,48,16,24));
         sprite.color = color;
         eyes = new Spritemap("graphics/player.png", 16, 24);
-        eyes.add("down", [0]);
-        eyes.add("up", [1]);
-        eyes.add("left", [2]);
-        eyes.add("right", [3]);
+        eyes.add("down_squint", [0]);
+        eyes.add("up_squint", [1]);
+        eyes.add("left_squint", [2]);
+        eyes.add("right_squint", [3]);
+        eyes.add("down", [4]);
+        eyes.add("up", [5]);
+        eyes.add("left", [6]);
+        eyes.add("right", [7]);
         addGraphic(sprite);
         addGraphic(eyes);
         moveDir = new Point();
@@ -82,22 +86,30 @@ class Contestant extends Entity
             dir.y = dY;
             dir.normalize(1);
             var angle = HXP.angle(0,0,dX,dY);
+            var animation = "";
             if (angle > 135 && angle < 225)
             {
-                eyes.play("left");
+                animation = "left";
             }
             else if (angle < 45 || angle > 315)
             {
-                eyes.play("right");
+                animation = "right";
             }
             else if (angle > 45 && angle < 135)
             {
-                eyes.play("up");
+                animation = "up";
             }
             else if (angle > 225 && angle < 315)
             {
-                eyes.play("down");
+                animation = "down";
             }
+
+            if (stunnedCooldown > 0)
+            {
+                animation += "_squint";
+            }
+
+            eyes.play(animation);
         }        
     }
 
@@ -119,6 +131,7 @@ class Contestant extends Entity
             return;
 
         graphic = sprite;
+        addGraphic(eyes);
         var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * throwStrengthMultiplier, this);
         scene.add(weapon);
         this.weapon = null;
@@ -147,7 +160,7 @@ class Contestant extends Entity
         HXP.angleXY(weapon, weapon.angle, weaponRange);
 
         var colliders = new Array<Entity>();
-        var steps = 2;
+        var steps = 3;
         for (i in 0...steps)
         {
             var incr = (i + 1) / steps;
