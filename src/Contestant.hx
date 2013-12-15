@@ -144,7 +144,7 @@ class Contestant extends Entity
         if (!weaponIdle() || falling)
             return;
 
-        graphic = null;
+        graphic = new Graphiclist();
         addGraphic(sprite);
         var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * throwStrengthMultiplier, this);
         scene.add(weapon);
