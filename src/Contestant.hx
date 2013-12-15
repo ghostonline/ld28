@@ -164,6 +164,7 @@ class Contestant extends Entity
             weapon.visible = false;
         }
         moveDir = new Point();
+        if (wasHit != null) wasHit();
     }
 
     function updateWeaponAngle()
@@ -266,6 +267,7 @@ class Contestant extends Entity
     }
 
     public var defeated:Void->Void;
+    public var wasHit:Void->Void;
 
     var sprite:Graphiclist;
     var eyes:Spritemap;

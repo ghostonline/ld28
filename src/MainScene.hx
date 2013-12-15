@@ -28,7 +28,7 @@ class MainScene extends Scene
 
 	function spawnPlayer()
 	{
-		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF9999);
+		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF0000);
 		player.defeated = function() { playerDead = true; }
 		add(player);
 	}
@@ -40,7 +40,7 @@ class MainScene extends Scene
 
 		defeatCount += 1;
 		counter.setCount(defeatCount);
-		opponent = new Contestant(160, 120, 1, 0.3, arena, 0x3333FF);
+		opponent = new Contestant(160, 120, 1, 0.3, arena, 0x0000FF);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
