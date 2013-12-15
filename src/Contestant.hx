@@ -1,5 +1,6 @@
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.prototype.Circle;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
@@ -13,6 +14,13 @@ class Contestant extends Entity
 	static var swingArc = 130;
     static var stunnedDuration = 0.1;
     static var hitAngleIncrement = 45;
+    static var bounceSpeed = 0.075;
+
+    function bounceArc(progress:Float)
+    {
+        var x = (progress * 2) - 1;
+        return (x * x) * 5;
+    }
 
     public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena, color:Int)
     {
@@ -27,8 +35,14 @@ class Contestant extends Entity
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
-        sprite = new Image("graphics/player.png", new Rectangle(0,48,16,24));
-        sprite.color = color;
+
+        sprite = new Graphiclist();
+        var base = new Image("graphics/player.png", new Rectangle(0,48,16,24));
+        base.color = color;
+        base.centerOrigin();
+        base.originY = 24 - height / 2;
+        sprite.add(base);
+
         eyes = new Spritemap("graphics/player.png", 16, 24);
         eyes.add("down_squint", [0]);
         eyes.add("up_squint", [1]);
@@ -38,14 +52,14 @@ class Contestant extends Entity
         eyes.add("up", [5]);
         eyes.add("left", [6]);
         eyes.add("right", [7]);
+        eyes.originX = base.originX;
+        eyes.originY = base.originY;
+        sprite.add(eyes);
+
         addGraphic(sprite);
-        addGraphic(eyes);
+
         moveDir = new Point();
         dir = new Point(1, 0);
-        sprite.centerOrigin();
-        sprite.originY = 24 - height / 2;
-        eyes.originX = sprite.originX;
-        eyes.originY = sprite.originY;
         centerOrigin();
         this.arena = arena;
         type = "contestant";
@@ -130,8 +144,8 @@ class Contestant extends Entity
         if (!weaponIdle() || falling)
             return;
 
-        graphic = sprite;
-        addGraphic(eyes);
+        graphic = null;
+        addGraphic(sprite);
         var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * throwStrengthMultiplier, this);
         scene.add(weapon);
         this.weapon = null;
@@ -213,6 +227,20 @@ class Contestant extends Entity
         if (!falling)
         {
             layer = 50 - Math.floor(y / 240 * 12);
+            if (bounceProgress < 1 && !(stunnedCooldown > 0))
+            {
+                bounceProgress += bounceSpeed;
+            }
+            else if (moveDir.x != 0 || moveDir.y != 0)
+            {
+                bounceProgress = 0;
+            }
+            else
+            {
+                bounceProgress = 1;
+            }
+
+            sprite.y = bounceArc(bounceProgress);
         }
 
         if (!falling && collideWith(arena, x, y) == null)
@@ -239,7 +267,7 @@ class Contestant extends Entity
 
     public var defeated:Void->Void;
 
-    var sprite:Image;
+    var sprite:Graphiclist;
     var eyes:Spritemap;
     var moveDir:Point;
     var dir:Point;
@@ -253,6 +281,7 @@ class Contestant extends Entity
     var weaponStrength:Float;
     var arena:Arena;
     var falling:Bool;
+    var bounceProgress:Float;
     
     var hitDir:Point;
     var stunnedCooldown:Float;
