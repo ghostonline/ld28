@@ -68,7 +68,10 @@ class MainScene extends Scene
 	function spawnPlayer()
 	{
 		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF0000, 6);
-		player.defeated = function() { playerDead = true; }
+		player.defeated = function() { 
+			add(new GameOver());
+			playerDead = true; 
+		}
 		add(player);
 	}
 
@@ -138,6 +141,20 @@ class MainScene extends Scene
 			player.throw_();
 		}
 
+		if (Input.check("reset"))
+		{
+			resetPrimed = true;
+		}
+		else if (resetPrimed)
+		{
+			HXP.scene = new MainScene();
+			resetPrimed = false;
+		}
+		else
+		{
+			resetPrimed = false;
+		}
+
 		ai.updateAI();
 	}
 
@@ -149,4 +166,5 @@ class MainScene extends Scene
 	var counter:Counter;
 	var defeatCount:Int;
 	var playerDead:Bool;
+	var resetPrimed:Bool;
 }
