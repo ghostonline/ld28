@@ -20,7 +20,7 @@ private class LevelOpponent
 
 class MainScene extends Scene
 {
-	static var shrinkInterval = 10;
+	static var shrinkInterval = 25;
 	static var levels:Array<LevelOpponent> = null;
 	static var opponentsPerLevel = 3;
 	static var spawn:Array<Int> = [168, 136, 200];
