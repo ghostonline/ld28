@@ -3,6 +3,7 @@ import com.haxepunk.utils.Input;
 
 class MainScene extends Scene
 {
+	static var shrinkInterval = 10;
 
 	public override function begin()
 	{
@@ -15,7 +16,7 @@ class MainScene extends Scene
 		ai = new AgressiveAI(opponent, player);
 		arena = new Arena(16, 64, 288, 144);
 		add(arena);
-		com.haxepunk.HXP.alarm(2.5, shrinkArena, Looping);
+		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
 	}
 
 	function shrinkArena(Void):Void
