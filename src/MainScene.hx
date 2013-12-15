@@ -9,11 +9,12 @@ class MainScene extends Scene
 	{
 		super.begin();
 
-		arena = new Arena(16, 64, 288, 144);
+		arena = new Arena(16, 112, 288, 112);
 		add(arena);
 		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
 		spawnPlayer();
 		spawnOpponent();
+		add(new Background());
 	}
 
 	function shrinkArena(Void):Void
