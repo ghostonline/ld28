@@ -3,19 +3,19 @@ import com.haxepunk.utils.Input;
 
 class MainScene extends Scene
 {
-	static var shrinkInterval = 10;
+	static var shrinkInterval = 5;
 
 	public override function begin()
 	{
 		super.begin();
 
-		player = new Contestant(50, 50, 3, 0.2);
-		add(player);
-		opponent = new Contestant(160, 120, 1, 0.3);
-		add(opponent);
-		ai = new AgressiveAI(opponent, player);
 		arena = new Arena(16, 64, 288, 144);
 		add(arena);
+		player = new Contestant(50, 120, 3, 0.2, arena);
+		add(player);
+		opponent = new Contestant(160, 120, 1, 0.3, arena);
+		add(opponent);
+		ai = new AgressiveAI(opponent, player);
 		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
 	}
 

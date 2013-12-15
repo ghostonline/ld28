@@ -12,7 +12,7 @@ class Contestant extends Entity
     static var stunnedDuration = 0.1;
     static var hitAngleIncrement = 45;
 
-    public function new(x:Float, y:Float, speed:Float, swingDuration:Float)
+    public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena)
     {
         super(x, y);
         this.speed = speed;
@@ -31,9 +31,8 @@ class Contestant extends Entity
         moveDir = new Point();
         dir = new Point(1, 0);
         sprite.centerOrigin();
-        var circleMask = new com.haxepunk.masks.Circle(halfWidth, -halfWidth, -halfWidth);
-        mask = circleMask;
         centerOrigin();
+        this.arena = arena;
         type = "contestant";
         layer = 50;
     }
@@ -57,7 +56,7 @@ class Contestant extends Entity
 
     public function setMoveDirection(dX:Int, dY:Int)
     {
-        if (stunnedCooldown > 0)
+        if (stunnedCooldown > 0 || falling)
             return;
 
     	moveDir.x = dX;
@@ -77,7 +76,7 @@ class Contestant extends Entity
 
     public function swing()
     {
-        if (!weaponIdle())
+        if (!weaponIdle() || falling)
         {
             return;
         }
@@ -89,7 +88,7 @@ class Contestant extends Entity
 
     public function throw_()
     {
-        if (!weaponIdle())
+        if (!weaponIdle() || falling)
             return;
 
         graphic = sprite;
@@ -134,7 +133,7 @@ class Contestant extends Entity
     public override function update()
     {
     	super.update();
-    	moveBy(moveDir.x, moveDir.y, type);
+        moveBy(moveDir.x, moveDir.y, type);
     	if (weapon != null && weapon.visible)
     	{
     		swingCooldown -= HXP.elapsed;
@@ -165,6 +164,21 @@ class Contestant extends Entity
                 installWeapon(weapon.image, weapon.range, weapon.strength);
             }
         }
+
+        if (!falling && collideWith(arena, x, y) == null)
+        {
+            falling = true;
+            type = "falling_contestant";
+            moveDir.y = 2;
+            if (arena.y > y)
+            {
+                layer = arena.layer + 1;
+            }
+        }
+        else if (falling)
+        {
+            moveDir.y *= 1.05;
+        }
     }
 
     var sprite:Image;
@@ -178,6 +192,8 @@ class Contestant extends Entity
     var weapon:Image;
     var weaponRange:Float;
     var weaponStrength:Float;
+    var arena:Arena;
+    var falling:Bool;
     
     var hitDir:Point;
     var stunnedCooldown:Float;

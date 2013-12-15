@@ -43,6 +43,7 @@ class Arena extends Entity
         setHitbox(width, height);
         drop = new Array<FloorDrop>();
         layer = 99;
+        type = "arena";
     }
 
     public function dropSides()
@@ -102,9 +103,9 @@ class Arena extends Entity
         var hitBoxWidth = (columns - reduced * 2) * tileWidth;
         if (width > hitBoxWidth)
         {
-        	var offsetX = Math.floor(reduced * tileWidth - (width - hitBoxWidth) * 0.5);
         	width -= hitboxShrinkSpeed;
-        	setHitbox(width, height, -offsetX);
+        	var offsetX = Math.floor(reduced * tileWidth - (width - hitBoxWidth) * 0.5);
+        	setHitbox(width, height, -offsetX, 0);
         }
     }
 
