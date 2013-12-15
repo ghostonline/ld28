@@ -17,6 +17,7 @@ class Contestant extends Entity
         super(x, y);
         this.speed = speed;
         width = 16;
+        height = 8;
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = 6;
@@ -24,9 +25,7 @@ class Contestant extends Entity
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
-        height = width;
-        var halfWidth = Math.floor(halfWidth);
-        sprite = Image.createCircle(halfWidth, 0xFF0000);
+        sprite = Image.createRect(width, height, 0xFF0000);
         addGraphic(sprite);
         moveDir = new Point();
         dir = new Point(1, 0);
@@ -120,13 +119,18 @@ class Contestant extends Entity
         HXP.angleXY(weapon, weapon.angle, weaponRange);
 
         var colliders = new Array<Entity>();
-        scene.collidePointInto(type, x + weapon.x, y + weapon.y, colliders);
-        for (e in colliders) {
-            if (e == this)
-                continue;
-            var hitAngle = weapon.angle + hitAngleIncrement;
-            var contestant = cast(e, Contestant);
-            contestant.receiveSwing(hitAngle, weaponStrength);
+        var steps = 2;
+        for (i in 0...steps)
+        {
+            var incr = (i + 1) / steps;
+            scene.collidePointInto(type, x + weapon.x * incr, y + weapon.y * incr, colliders);
+            for (e in colliders) {
+                if (e == this)
+                    continue;
+                var hitAngle = weapon.angle + hitAngleIncrement;
+                var contestant = cast(e, Contestant);
+                contestant.receiveSwing(hitAngle, weaponStrength);
+            }
         }
     }
 
