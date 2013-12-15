@@ -80,7 +80,7 @@ class Contestant extends Entity
         fallSfx = new Sfx("audio/fall.wav");
         dropTween = new NumTween();
         addTween(dropTween);
-        dropTween.tween(240, 0, 2, Ease.bounceOut);
+        dropTween.tween(240, -4, 2, Ease.bounceOut);
         falling = true;
     }
 
@@ -287,6 +287,7 @@ class Contestant extends Entity
                 layer = arena.layer + 1;
             }
             fallSfx.play();
+            shadow.visible = false;
         }
         else if (falling)
         {
