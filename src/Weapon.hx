@@ -33,6 +33,10 @@ class Weapon extends Entity
         super.update();
         moveBy(moveX, moveY, "contestant");
         image.angle += dAngle;
+        if (x < 0 || y < 0 || x > 320 || y > 240)
+        {
+            scene.remove(this);
+        }
     }
 
     public override function moveCollideX(e:Entity)

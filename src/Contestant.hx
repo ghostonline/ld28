@@ -182,8 +182,16 @@ class Contestant extends Entity
         else if (falling)
         {
             moveDir.y *= 1.05;
+            if (x < -width || y < -height || x > 320 + width || y > 240 + height)
+            {
+                scene.remove(this);
+                if (defeated != null)
+                    defeated();
+            }
         }
     }
+
+    public var defeated:Void->Void;
 
     var sprite:Image;
     var moveDir:Point;

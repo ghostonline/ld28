@@ -12,8 +12,10 @@ class MainScene extends Scene
 		arena = new Arena(16, 64, 288, 144);
 		add(arena);
 		player = new Contestant(50, 120, 3, 0.2, arena);
+		player.defeated = contestantDefeated;
 		add(player);
 		opponent = new Contestant(160, 120, 1, 0.3, arena);
+		opponent.defeated = contestantDefeated;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
 		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
@@ -22,6 +24,11 @@ class MainScene extends Scene
 	function shrinkArena(Void):Void
 	{
 		arena.dropSides();
+	}
+
+	function contestantDefeated()
+	{
+		trace("Dead");
 	}
 
 	public override function update()
