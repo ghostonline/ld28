@@ -4,6 +4,7 @@ import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.prototype.Circle;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
+import com.haxepunk.Sfx;
 import flash.geom.Point;
 import flash.geom.Rectangle;
  
@@ -68,6 +69,13 @@ class Contestant extends Entity
         centerOrigin();
         this.arena = arena;
         type = "contestant";
+
+        hitSfx = new Array<Sfx>();
+        hitSfx.push(new Sfx("audio/hit_1.wav"));
+        hitSfx.push(new Sfx("audio/hit_2.wav"));
+        hitSfx.push(new Sfx("audio/hit_3.wav"));
+
+        fallSfx = new Sfx("audio/fall.wav");
     }
 
     function installWeapon(image:Image, range:Float, strength:Float)
@@ -171,6 +179,7 @@ class Contestant extends Entity
         }
         moveDir = new Point();
         if (wasHit != null) wasHit();
+        hitSfx[HXP.rand(hitSfx.length)].play();
     }
 
     function updateWeaponAngle()
@@ -259,6 +268,7 @@ class Contestant extends Entity
             {
                 layer = arena.layer + 1;
             }
+            fallSfx.play();
         }
         else if (falling)
         {
@@ -291,6 +301,9 @@ class Contestant extends Entity
     var arena:Arena;
     var falling:Bool;
     var bounceProgress:Float;
+
+    var hitSfx:Array<Sfx>;
+    var fallSfx:Sfx;
     
     var hitDir:Point;
     var stunnedCooldown:Float;
