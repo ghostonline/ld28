@@ -6,8 +6,8 @@ import flash.geom.Point;
  
 class Contestant extends Entity
 {
-	static var weaponWidth = 20;
-	static var weaponHeight = 6;
+	static var weaponWidth = 12;
+	static var weaponHeight = 3;
 	static var swingArc = 130;
     static var stunnedDuration = 0.1;
     static var hitAngleIncrement = 45;
@@ -16,10 +16,10 @@ class Contestant extends Entity
     {
         super(x, y);
         this.speed = speed;
-        width = 24;
+        width = 16;
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
-        weaponStrength = 10;
+        weaponStrength = 6;
         var weaponImage = Image.createRect(weaponWidth, weaponHeight, 0x00FF00);
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
@@ -35,6 +35,7 @@ class Contestant extends Entity
         mask = circleMask;
         centerOrigin();
         type = "contestant";
+        layer = 50;
     }
 
     function installWeapon(image:Image, range:Float, strength:Float)

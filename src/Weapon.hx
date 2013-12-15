@@ -25,6 +25,7 @@ class Weapon extends Entity
         mask = new com.haxepunk.masks.Circle(halfWidth, -halfWidth, -halfWidth);
         type = "weapon";
         dangerous = true;
+        layer = 75;
     }
 
     public override function update()

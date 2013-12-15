@@ -15,7 +15,7 @@ class Main extends Engine
 		Input.define("throw", [ Key.SPACE, Key.CONTROL, Key.X ]);
 
 		HXP.screen.scaleX = 2;
-		HXP.screen.scaleY = 1;
+		HXP.screen.scaleY = 2;
 		
 #if debug
 		HXP.console.enable();
