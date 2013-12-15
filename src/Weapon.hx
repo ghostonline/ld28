@@ -23,6 +23,8 @@ class Weapon extends Entity
         image.visible = true;
         var halfWidth = Math.floor(image.width / 2);
         mask = new com.haxepunk.masks.Circle(halfWidth, -halfWidth, -halfWidth);
+        type = "weapon";
+        dangerous = true;
     }
 
     public override function update()
@@ -45,6 +47,7 @@ class Weapon extends Entity
     	moveX = 0;
     	moveY = 0;
     	dAngle = 0;
+        dangerous = false;
     	return true;
     }
 
@@ -53,12 +56,18 @@ class Weapon extends Entity
     	return moveCollideX(e);
     }
 
+    public function pickup()
+    {
+        scene.remove(this);
+    }
+
+    public var dangerous:Bool;
     var dAngle:Float;
     var moveX:Float;
     var moveY:Float;
-    var image:Image;
-    var range:Float;
-    var strength:Float;
-    var throwStrength:Float;
+    public var image:Image;
+    public var range:Float;
+    public var strength:Float;
+    public var throwStrength:Float;
     var owner:Contestant;
 }

@@ -20,16 +20,14 @@ class Contestant extends Entity
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
         weaponStrength = 10;
+        var weaponImage = Image.createRect(weaponWidth, weaponHeight, 0x00FF00);
+        installWeapon(weaponImage, weaponRange, weaponStrength);
+        throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
         height = width;
         var halfWidth = Math.floor(halfWidth);
         sprite = Image.createCircle(halfWidth, 0xFF0000);
         addGraphic(sprite);
-        weapon = Image.createRect(weaponWidth, weaponHeight, 0x00FF00);
-        weapon.centerOrigin();
-        weapon.originX = weaponWidth;
-        addGraphic(weapon);
-        weapon.visible = false;
         moveDir = new Point();
         dir = new Point(1, 0);
         sprite.centerOrigin();
@@ -37,6 +35,18 @@ class Contestant extends Entity
         mask = circleMask;
         centerOrigin();
         type = "contestant";
+    }
+
+    function installWeapon(image:Image, range:Float, strength:Float)
+    {
+        weapon = image;
+        weaponRange = range;
+        weaponStrength = strength;
+
+        weapon.centerOrigin();
+        weapon.originX = weaponWidth;
+        addGraphic(weapon);
+        weapon.visible = false;
     }
 
     function weaponIdle()
@@ -82,7 +92,7 @@ class Contestant extends Entity
             return;
 
         graphic = sprite;
-        var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * 1.5, this);
+        var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * throwStrengthMultiplier, this);
         scene.add(weapon);
         this.weapon = null;
     }
@@ -138,6 +148,22 @@ class Contestant extends Entity
             stunnedCooldown -= HXP.elapsed;
             moveBy(hitDir.x, hitDir.y, type);
         }
+        if (weapon == null)
+        {
+            var weapons = new Array<Entity>();
+            this.collideInto("weapon", x, y, weapons);
+            for (e in weapons)
+            {
+                var weapon = cast(e, Weapon);
+                if (weapon.dangerous)
+                {
+                    continue;
+                }
+
+                weapon.pickup();
+                installWeapon(weapon.image, weapon.range, weapon.strength);
+            }
+        }
     }
 
     var sprite:Image;
@@ -145,6 +171,7 @@ class Contestant extends Entity
     var dir:Point;
     var speed:Float;
     var throwSpeed:Float;
+    var throwStrengthMultiplier:Float;
     var swingDuration:Float;
     var swingCooldown:Float;
     var weapon:Image;

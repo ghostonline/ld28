@@ -59,7 +59,7 @@ class MainScene extends Scene
 			player.throw_();
 		}
 
-		ai.updateAI();
+		//ai.updateAI();
 
 	}
 
