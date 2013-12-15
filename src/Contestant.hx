@@ -5,6 +5,8 @@ import com.haxepunk.graphics.prototype.Circle;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Sfx;
+import com.haxepunk.tweens.misc.NumTween;
+import com.haxepunk.utils.Ease;
 import flash.geom.Point;
 import flash.geom.Rectangle;
  
@@ -76,6 +78,10 @@ class Contestant extends Entity
         hitSfx.push(new Sfx("audio/hit_3.wav"));
 
         fallSfx = new Sfx("audio/fall.wav");
+        dropTween = new NumTween();
+        addTween(dropTween);
+        dropTween.tween(240, 0, 2, Ease.bounceOut);
+        falling = true;
     }
 
     function installWeapon(image:Image, range:Float, strength:Float)
@@ -167,7 +173,7 @@ class Contestant extends Entity
 
     public function receiveSwing(angle:Float, strength:Float)
     {
-        if (stunnedCooldown > 0)
+        if (stunnedCooldown > 0 || falling)
             return;
 
         hitDir = new Point();
@@ -208,6 +214,18 @@ class Contestant extends Entity
     public override function update()
     {
     	super.update();
+        if (dropTween != null)
+        {
+            sprite.y = -dropTween.value;
+            shadow.scale = 1 - dropTween.value / 240;
+            if (!dropTween.active)
+            {
+                dropTween = null;
+                falling = false;
+            }
+            return;
+        }
+
         moveBy(moveDir.x, moveDir.y, type);
     	if (weapon != null && weapon.visible)
     	{
@@ -301,6 +319,7 @@ class Contestant extends Entity
     var arena:Arena;
     var falling:Bool;
     var bounceProgress:Float;
+    var dropTween:NumTween;
 
     var hitSfx:Array<Sfx>;
     var fallSfx:Sfx;
