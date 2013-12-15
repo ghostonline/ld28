@@ -127,7 +127,7 @@ class Contestant extends Entity
             for (e in colliders) {
                 if (e == this)
                     continue;
-                var hitAngle = weapon.angle + hitAngleIncrement;
+                var hitAngle = HXP.angle(x, y, e.x, e.y);
                 var contestant = cast(e, Contestant);
                 contestant.receiveSwing(hitAngle, weaponStrength);
             }
