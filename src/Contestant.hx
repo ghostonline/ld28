@@ -40,7 +40,7 @@ class Contestant extends Entity
         var base = new Image("graphics/player.png", new Rectangle(0,48,16,24));
         base.color = color;
         base.centerOrigin();
-        base.originY = 24 - height / 2;
+        base.originY = 24;
         sprite.add(base);
 
         eyes = new Spritemap("graphics/player.png", 16, 24);
@@ -56,6 +56,11 @@ class Contestant extends Entity
         eyes.originY = base.originY;
         sprite.add(eyes);
 
+        shadow = new Image("graphics/player.png", new Rectangle(16,48,16,24));
+        shadow.originX = 8;
+        shadow.originY = 19;
+        shadow.alpha = 0.5;
+        addGraphic(shadow);
         addGraphic(sprite);
 
         moveDir = new Point();
@@ -145,6 +150,7 @@ class Contestant extends Entity
             return;
 
         graphic = new Graphiclist();
+        addGraphic(shadow);
         addGraphic(sprite);
         var weapon = new Weapon(x, y, dir.x, dir.y, throwSpeed, weapon, weaponRange, weaponStrength, weaponStrength * throwStrengthMultiplier, this);
         scene.add(weapon);
@@ -271,6 +277,7 @@ class Contestant extends Entity
 
     var sprite:Graphiclist;
     var eyes:Spritemap;
+    var shadow:Image;
     var moveDir:Point;
     var dir:Point;
     var speed:Float;
