@@ -23,7 +23,7 @@ class MainScene extends Scene
 	static var shrinkInterval = 10;
 	static var levels:Array<LevelOpponent> = null;
 	static var opponentsPerLevel = 3;
-	static var spawn:Array<Int> = [168, 112, 224];
+	static var spawn:Array<Int> = [168, 136, 200];
 
 	public override function begin()
 	{
