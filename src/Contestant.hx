@@ -22,7 +22,7 @@ class Contestant extends Entity
         return (x * x) * 5;
     }
 
-    public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena, color:Int)
+    public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena, color:Int, strength:Float)
     {
         super(x, y);
         this.speed = speed;
@@ -30,7 +30,7 @@ class Contestant extends Entity
         height = 8;
         this.swingDuration = swingDuration;
         weaponRange = Math.floor(width / 2) + weaponWidth;
-        weaponStrength = 6;
+        weaponStrength = strength;
         var weaponImage = new Image("graphics/paddle.png");
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
@@ -45,9 +45,9 @@ class Contestant extends Entity
 
         eyes = new Spritemap("graphics/player.png", 16, 24);
         eyes.add("down_squint", [0]);
-        eyes.add("up_squint", [1]);
-        eyes.add("left_squint", [2]);
-        eyes.add("right_squint", [3]);
+        eyes.add("up_squint", [0]);
+        eyes.add("left_squint", [0]);
+        eyes.add("right_squint", [0]);
         eyes.add("down", [4]);
         eyes.add("up", [5]);
         eyes.add("left", [6]);
