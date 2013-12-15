@@ -1,5 +1,6 @@
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
+import com.haxepunk.HXP;
 
 private class LevelOpponent
 {
@@ -22,6 +23,7 @@ class MainScene extends Scene
 	static var shrinkInterval = 10;
 	static var levels:Array<LevelOpponent> = null;
 	static var opponentsPerLevel = 3;
+	static var spawn:Array<Int> = [168, 112, 224];
 
 	public override function begin()
 	{
@@ -33,7 +35,7 @@ class MainScene extends Scene
 
 		arena = new Arena(16, 112, 288, 112);
 		add(arena);
-		com.haxepunk.HXP.alarm(shrinkInterval, shrinkArena, Looping);
+		HXP.alarm(shrinkInterval, shrinkArena, Looping);
 		add(new Background());
 		counter = new Counter(295, 84);
 		add(counter);
@@ -78,9 +80,15 @@ class MainScene extends Scene
 		defeatCount += 1;
 		counter.setCount(defeatCount);
 		var levelNum = Math.floor(defeatCount / opponentsPerLevel);
-		levelNum = Math.floor(com.haxepunk.HXP.clamp(levelNum, 0, levels.length - 1));
+		levelNum = Math.floor(HXP.clamp(levelNum, 0, levels.length - 1));
 		var levelData = levels[levelNum];
-		opponent = new Contestant(160, 168, levelData.speed, levelData.swingDuration, arena, levelData.color, levelData.strength);
+
+		var spawnY = spawn[0];
+		if (HXP.distance(player.x, player.y, 160, spawnY) < 24)
+		{
+			spawnY = spawn[HXP.rand(2) + 1];
+		}
+		opponent = new Contestant(160, spawnY, levelData.speed, levelData.swingDuration, arena, levelData.color, levelData.strength);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
