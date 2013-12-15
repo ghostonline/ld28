@@ -3,7 +3,8 @@ import com.haxepunk.HXP;
 
 class AgressiveAI
 {
-	static var swingRangeThreshold = 16;
+	static var swingRangeThresholdX = 24;
+	static var swingRangeThresholdY = 16;
 
 	public function new(contestant:Contestant, target:Contestant)
 	{
@@ -16,10 +17,9 @@ class AgressiveAI
 		var aimX = Math.floor(target.x - contestant.x);
 		var aimY = Math.floor(target.y - contestant.y);
 		contestant.setMoveDirection(aimX, aimY);
-		var dist = HXP.distance(contestant.x, contestant.y, target.x, target.y);
-		if (dist < swingRangeThreshold)
+		contestant.setAimDirection(aimX, aimY);
+		if (Math.abs(aimX) < swingRangeThresholdX && Math.abs(aimY) < swingRangeThresholdY)
 		{
-			contestant.setAimDirection(aimX, aimY);
 			contestant.swing();
 		}
 	}

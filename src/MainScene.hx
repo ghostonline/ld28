@@ -23,13 +23,13 @@ class MainScene extends Scene
 
 	function spawnPlayer()
 	{
-		player = new Contestant(50, 120, 3, 0.15, arena);
+		player = new Contestant(50, 120, 3, 0.15, arena, 0xFF9999);
 		add(player);
 	}
 
 	function spawnOpponent()
 	{
-		opponent = new Contestant(160, 120, 1, 0.3, arena);
+		opponent = new Contestant(160, 120, 1, 0.3, arena, 0x3333FF);
 		opponent.defeated = spawnOpponent;
 		add(opponent);
 		ai = new AgressiveAI(opponent, player);
@@ -80,7 +80,6 @@ class MainScene extends Scene
 		}
 
 		ai.updateAI();
-
 	}
 
 	var player:Contestant;

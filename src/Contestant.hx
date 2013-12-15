@@ -1,8 +1,10 @@
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.prototype.Circle;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import flash.geom.Point;
+import flash.geom.Rectangle;
  
 class Contestant extends Entity
 {
@@ -12,7 +14,7 @@ class Contestant extends Entity
     static var stunnedDuration = 0.1;
     static var hitAngleIncrement = 45;
 
-    public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena)
+    public function new(x:Float, y:Float, speed:Float, swingDuration:Float, arena:Arena, color:Int)
     {
         super(x, y);
         this.speed = speed;
@@ -25,15 +27,24 @@ class Contestant extends Entity
         installWeapon(weaponImage, weaponRange, weaponStrength);
         throwStrengthMultiplier = 1.5;
         throwSpeed = this.speed * 2;
-        sprite = Image.createRect(width, height, 0xFF0000);
+        sprite = new Image("graphics/player.png", new Rectangle(0,24,16,24));
+        sprite.color = color;
+        eyes = new Spritemap("graphics/player.png", 16, 24);
+        eyes.add("down", [0]);
+        eyes.add("up", [1]);
+        eyes.add("left", [2]);
+        eyes.add("right", [3]);
         addGraphic(sprite);
+        addGraphic(eyes);
         moveDir = new Point();
         dir = new Point(1, 0);
         sprite.centerOrigin();
+        sprite.originY = 24 - height / 2;
+        eyes.originX = sprite.originX;
+        eyes.originY = sprite.originY;
         centerOrigin();
         this.arena = arena;
         type = "contestant";
-        layer = 50;
     }
 
     function installWeapon(image:Image, range:Float, strength:Float)
@@ -70,6 +81,23 @@ class Contestant extends Entity
             dir.x = dX;
             dir.y = dY;
             dir.normalize(1);
+            var angle = HXP.angle(0,0,dX,dY);
+            if (angle > 135 && angle < 225)
+            {
+                eyes.play("left");
+            }
+            else if (angle < 45 || angle > 315)
+            {
+                eyes.play("right");
+            }
+            else if (angle > 45 && angle < 135)
+            {
+                eyes.play("up");
+            }
+            else if (angle > 225 && angle < 315)
+            {
+                eyes.play("down");
+            }
         }        
     }
 
@@ -169,6 +197,11 @@ class Contestant extends Entity
             }
         }
 
+        if (!falling)
+        {
+            layer = 50 - Math.floor(y / 240 * 12);
+        }
+
         if (!falling && collideWith(arena, x, y) == null)
         {
             falling = true;
@@ -194,6 +227,7 @@ class Contestant extends Entity
     public var defeated:Void->Void;
 
     var sprite:Image;
+    var eyes:Spritemap;
     var moveDir:Point;
     var dir:Point;
     var speed:Float;
