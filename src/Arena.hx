@@ -1,17 +1,20 @@
+import com.haxepunk.Tween;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Tilemap;
 import com.haxepunk.tweens.motion.LinearMotion;
+import com.haxepunk.tweens.motion.CircularMotion;
+import com.haxepunk.tweens.motion.Motion;
 import com.haxepunk.utils.Ease;
 import flash.geom.Rectangle;
  
 private class FloorDrop
 {
 	public var images:Array<Image>;
-	public var tween:LinearMotion;
+	public var tween:Motion;
 
-	public function new(images:Array<Image>, tween:LinearMotion)
+	public function new(images:Array<Image>, tween:Motion)
 	{
 		this.images = images;
 		this.tween = tween;
@@ -25,6 +28,7 @@ class Arena extends Entity
 	static var fallSpeed = 128;
 	static var fallSpeedFalloff = 4;
 	static var hitboxShrinkSpeed = 1;
+	static var shiverDuration = 2;
 
     public function new(x:Float, y:Float, width:Int, height:Int)
     {
@@ -43,6 +47,7 @@ class Arena extends Entity
         }
         setHitbox(width, height);
         drop = new Array<FloorDrop>();
+        shiver = new Array<FloorDrop>();
         layer = 99;
         type = "arena";
     }
@@ -52,6 +57,28 @@ class Arena extends Entity
     	if (columns - reduced * 2 <= 2)
     		return;
 
+    	shiverTimer = shiverDuration;
+    	for (i in 0...rows) {
+    		var leftIdx = i * columns + reduced;
+    		var leftTile = ground[leftIdx];
+	    	var tween = new CircularMotion(null, TweenType.Looping);
+	    	tween.setMotion(leftTile.x, leftTile.y, 1 , 90 + HXP.rand(2) * 180, true, 0.1 + 0.1 * HXP.random);
+	    	addTween(tween);
+	    	var newDrop = new FloorDrop([leftTile], tween);
+	    	shiver.push(newDrop);
+
+    		var rightIdx = i * columns + (columns - reduced - 1);
+    		var rightTile = ground[rightIdx];
+	    	tween = new CircularMotion(null, TweenType.Looping);
+	    	tween.setMotion(rightTile.x, rightTile.y, 1 , 90 + HXP.rand(2) * 180, true, 0.1 + 0.1 * HXP.random);
+	    	addTween(tween);
+	    	var newDrop = new FloorDrop([rightTile], tween);
+	    	shiver.push(newDrop);
+    	}
+    }
+
+    function onShiverDone()
+    {
     	for (i in 0...rows) {
     		var leftIdx = i * columns + reduced;
     		var rightIdx = i * columns + (columns - reduced - 1);
@@ -69,9 +96,36 @@ class Arena extends Entity
     	reduced += 1;
     }
 
-    public override function update()
+    function processShivers()
     {
-        super.update();
+        for (i in 0...shiver.length)
+        {
+        	var idx = shiver.length - i - 1;
+        	var d = shiver[idx];
+    		for (tile in d.images)
+    		{
+    			tile.x = d.tween.x;
+    		}
+        }
+
+        if (shiver.length > 0)
+        {
+        	shiverTimer -= HXP.elapsed;
+        	if (shiverTimer < 0)
+        	{
+	        	for (d in shiver)
+	        	{
+	        		removeTween(d.tween);
+	        	}
+	        	shiver = new Array<FloorDrop>();
+	        	onShiverDone();
+        	}
+        }
+
+    }
+
+    function processDrops()
+    {
         var removables = 0;
         for (i in 0...drop.length)
         {
@@ -93,6 +147,7 @@ class Arena extends Entity
         		{
         			tile.visible = false;
         		}
+        		removeTween(d.tween);
         	}
         }
 
@@ -100,6 +155,14 @@ class Arena extends Entity
         {
         	drop.pop();
         }
+    }
+
+    public override function update()
+    {
+        super.update();
+        
+        processShivers();
+        processDrops();
 
         var hitBoxWidth = (columns - reduced * 2) * tileWidth;
         if (width > hitBoxWidth)
@@ -110,9 +173,11 @@ class Arena extends Entity
         }
     }
 
+    var shiverTimer:Float;
     var ground:Array<Image>;
     var columns:Int;
     var rows:Int;
     var reduced:Int;
+    var shiver:Array<FloorDrop>;
     var drop:Array<FloorDrop>;
 }
