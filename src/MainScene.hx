@@ -40,10 +40,19 @@ class MainScene extends Scene
 		add(counter);
 		defeatCount = -1;
 		counter.setCount(0);
-		spawnPlayer();
-		spawnStartGamePawn();
 		title = new Title();
 		add(title);
+		explanationOverlay = new HitPrompt("Controls:\n\n\tWASD or arrow keys\t\t- Move\n\tMouse move\t\t\t\t- Aim\n\tLeft mouse button\t\t\t- Swing bat\n\tSpace, Ctrl or Numpad-0\t- Throw bat\n\nRemember: you only get one bat, do not lose it!\n\n\t\t\t\t(click to continue)", title, 55, 120);
+		add(explanationOverlay);
+	}
+
+	function startIntro()
+	{
+		title.hide();
+		remove(explanationOverlay);
+		explanationOverlay = null;
+		spawnPlayer();
+		spawnStartGamePawn();
 	}
 
 	function loadLevels()
@@ -81,14 +90,15 @@ class MainScene extends Scene
 		var startPawn = new Contestant(160, 168, 3, 0.15, arena, 0xFFFFFF, 6);
 		add(startPawn);
 		
-		hintOverlay = new HitPrompt("Whack the dummy from the board to start", startPawn, -90, 10);
-		add(hintOverlay);
-		
 		startPawn.defeated = function() { 
 			spawnOpponent();
 			HXP.alarm(shrinkInterval, shrinkArena, Looping);
-			title.hide();
 			hintOverlay.hide();
+		}
+
+		startPawn.dropDone = function() {
+			hintOverlay = new HitPrompt("Whack the dummy from the board to start", startPawn, -90, 10);
+			add(hintOverlay);			
 		}
 	}
 
@@ -117,6 +127,14 @@ class MainScene extends Scene
 	public override function update()
 	{
 		super.update();
+		if (explanationOverlay != null)
+		{
+			if (Input.mousePressed)
+			{
+				startIntro();
+			}
+			return;
+		}
 
 		player.setAimDirection(Math.floor(Input.mouseX - player.x), Math.floor(Input.mouseY - player.y));
 
@@ -189,4 +207,5 @@ class MainScene extends Scene
 	var resetPrimed:Bool;
 	var title:Title;
 	var hintOverlay:HitPrompt;
+	var explanationOverlay:HitPrompt;
 }

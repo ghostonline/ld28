@@ -13,7 +13,7 @@ class Main extends Engine
 		Input.define("move_left", [ Key.A, Key.LEFT ]);
 		Input.define("move_right", [ Key.D, Key.RIGHT ]);
 		Input.define("throw", [ Key.SPACE, Key.CONTROL, Key.X ]);
-		Input.define("reset", [ Key.R, Key.ESCAPE ]);
+		Input.define("reset", [ Key.R, Key.ESCAPE, Key.NUMPAD_0 ]);
 
 		HXP.screen.scaleX = 2;
 		HXP.screen.scaleY = 2;

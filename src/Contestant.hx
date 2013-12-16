@@ -226,6 +226,10 @@ class Contestant extends Entity
             {
                 dropTween = null;
                 falling = false;
+                if (dropDone != null)
+                {
+                    dropDone();
+                }
             }
             return;
         }
@@ -307,6 +311,7 @@ class Contestant extends Entity
 
     public var defeated:Void->Void;
     public var wasHit:Void->Void;
+    public var dropDone:Void->Void;
 
     var sprite:Graphiclist;
     var eyes:Spritemap;
