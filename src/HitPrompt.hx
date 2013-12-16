@@ -1,4 +1,5 @@
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
  
 class HitPrompt extends Entity
@@ -6,7 +7,9 @@ class HitPrompt extends Entity
     public function new(overlay:String, entity:Entity, offsetX:Float, offsetY:Float)
     {
         super(0, 0);
-        text = new Text(overlay, 0, 0, { size : 8, color : 0x000000 });
+        text = new Text(overlay, 0, 0, { size : 8, color : 0xFFFFFF });
+        var background = Image.createRect(text.width, text.height, 0x000000, 0.5);
+        addGraphic(background);
         addGraphic(text);
 
         this.offsetX = offsetX;
