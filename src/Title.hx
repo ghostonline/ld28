@@ -9,7 +9,7 @@ class Title extends Entity
     public function new()
     {
         super(0, 0);
-        titleTxt = new Text("King of the hill", 3, 60, 320, 100, { size : 40, color : 0xFFFFFF });
+        titleTxt = new Text("King of the hill", 0, 0, 320, 100, { size : 40, color : 0xFFFFFF });
         addGraphic(titleTxt);
     }
 
@@ -17,7 +17,7 @@ class Title extends Entity
     {
         fadeTween = new NumTween();
         addTween(fadeTween);
-        fadeTween.tween(60, 0, 1, Ease.quadIn);
+        fadeTween.tween(0, -60, 1, Ease.quadIn);
     }
 
     public override function update()

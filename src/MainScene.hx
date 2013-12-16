@@ -25,6 +25,12 @@ class MainScene extends Scene
 	static var opponentsPerLevel = 3;
 	static var spawn:Array<Int> = [168, 136, 200];
 
+	public function new(startDirectly = false)
+	{
+		super();
+		this.startDirectly = startDirectly;
+	}
+
 	public override function begin()
 	{
 		super.begin();
@@ -41,9 +47,16 @@ class MainScene extends Scene
 		defeatCount = -1;
 		counter.setCount(0);
 		title = new Title();
-		add(title);
 		explanationOverlay = new HitPrompt("Controls:\n\n\tWASD or arrow keys\t\t- Move\n\tMouse move\t\t\t\t- Aim\n\tLeft mouse button\t\t\t- Swing bat\n\tSpace, Ctrl or Numpad-0\t- Throw bat\n\nRemember: you only get one bat, do not lose it!\n\n\t\t\t\t(click to continue)", title, 55, 120);
-		add(explanationOverlay);
+		if (!startDirectly)
+		{
+			add(title);
+			add(explanationOverlay);
+		}
+		else
+		{
+			startIntro();
+		}
 	}
 
 	function startIntro()
@@ -182,7 +195,7 @@ class MainScene extends Scene
 		}
 		else if (resetPrimed)
 		{
-			HXP.scene = new MainScene();
+			HXP.scene = new MainScene(true);
 			resetPrimed = false;
 		}
 		else
@@ -196,6 +209,7 @@ class MainScene extends Scene
 		}
 	}
 
+	var startDirectly:Bool;
 	var player:Contestant;
 	var opponent:Contestant;
 	var swingDown:Bool;
