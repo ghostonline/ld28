@@ -79,12 +79,17 @@ class MainScene extends Scene
 	function spawnStartGamePawn()
 	{
 		var startPawn = new Contestant(160, 168, 3, 0.15, arena, 0xFFFFFF, 6);
+		add(startPawn);
+		
+		hintOverlay = new HitPrompt("Whack the dummy from the board to start", startPawn, -90, 10);
+		add(hintOverlay);
+		
 		startPawn.defeated = function() { 
 			spawnOpponent();
 			HXP.alarm(shrinkInterval, shrinkArena, Looping);
 			title.hide();
+			hintOverlay.hide();
 		}
-		add(startPawn);
 	}
 
 	function spawnOpponent()
@@ -183,4 +188,5 @@ class MainScene extends Scene
 	var playerDead:Bool;
 	var resetPrimed:Bool;
 	var title:Title;
+	var hintOverlay:HitPrompt;
 }
